@@ -1,0 +1,86 @@
+<div class="container -flex justify-content-center align-items-cente h-75">
+    <div class="card">
+        <div class="d-flex justify-content-between h-auto">
+            <div class="">
+                <p class="fw-bold m-4"> {{'All BILLS'}} </p>
+            </div>
+            <div class="me-5 m-2 d-flex w-50 justify-content-end">
+                <div class=" text-end d-flex w-50">
+                    <label for="filter" class="form-label">Filter Bills:</label>
+                    <select id="filter" class="form-select" [(ngModel)]="filterStatus" (change)="filterBills()">
+                      <option value="All" selected>All</option>
+                      <option value="DUE">Due</option>
+                      <option value="PAID">Paid</option>
+                    </select>
+                  </div>
+                 <div>
+                <button class="btn btn-outline-secondary" [routerLink]="['/duebills']"
+                    routerLinkActive="router-link-active">View Dues</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="nodata" *ngIf="allBills.length <= 0 && !isloader">
+        <div class="image d-flex justify-content-center">
+            <img src="../../assets/images/nodatafound.jpg" alt="No Data Found" class="" width="500" height="450">
+        </div>
+        <div class="nodue">
+            <p class="text-center display-1 fw-bolder text-body-tertiary">No Bills</p>
+        </div>
+    </div>
+    <div class="row d-flex align-items-cente g-3 mt-2" *ngIf="allBills.length > 0">
+        @for (bills of filterBills(); track $index) {
+        <div class="col-12 col-md-6 col-lg-4">
+
+            <div class="card shadow-md">
+                <div class="card-header d-flex justify-content-between bg-primary-subtle">
+                    <p class="pt-2">Bill Id : {{bills.billId}} </p>
+                    <div class="d-flex pt-2">
+                        <p class="me-2">
+                        <span class="badge rounded-pill"
+                            [ngClass]="{'text-bg-warning': bills.status=='DUE', 'text-bg-success':bills.status == 'PAID'}">
+                            {{bills.status}} 
+                        </span>
+                    </p>
+                    <p *ngIf="bills.status == 'PAID'"> <a  placement="start" ngbTooltip="Download Invoice" (click)="generateInvoice(bills.billId)">
+                        <i class="bi bi-file-earmark-arrow-down-fill fs-4 text-warning-emphasis"></i></a></p>
+                    </div>
+                    
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <p>Units</p>
+                            <p>Bill Date</p>
+                            <p>Due Date</p>
+                            <p>Duration</p>
+                            <p>Bill Type</p>
+                        </div>
+                        <div class="col-8">
+                            <p> {{bills.units}} </p>
+                            <p> {{bills.billDate | date:'mediumDate'}} </p>
+                            <p> {{bills.dueDate | date:'mediumDate'}} </p>
+                            <p> {{bills.durationOfBill}} </p>
+                            <p> {{bills.billType}} </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between bg-body-secondary">
+                    <p class="text-body-tertiary">Total : <span class="text-primary">{{bills.totalAmount | currency:
+                            'INR'}}</span></p>
+                    
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+
+
+<div class="spinner-content" [ngClass]="{'d-none': !isloader}">
+    <div class="text-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>

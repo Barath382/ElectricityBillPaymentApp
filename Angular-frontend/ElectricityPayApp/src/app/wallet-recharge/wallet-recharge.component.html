@@ -1,0 +1,19 @@
+<div class="card mt-5 m-2">
+    <div class="card-body px-4">
+        <h5 class="card-title d-flex justify-content-between pt-2 mb-5"> <span>Total Wallet Balance</span>
+            <span><i class="bi bi-wallet-fill text-success"></i></span> </h5>
+        <h5 class="mb-1 ms-2 text-info-emphasis"> {{ walletBalance | currency:'INR'}} </h5>
+        <p class="text-body-tertiary ms-2">Available Balance</p>
+
+        <div class="mb-4 px-3">
+            <label for="walletamount" class="form-label">Enter Amount</label>
+            <input type="number" class="form-control" id="walletamount" [(ngModel)]="walletAmount">
+        </div>
+        <div class="bottom d-flex justify-content-between mt-1">
+            <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal"
+                (click)="updateWallet()">Add Money To Wallet</button>
+            <a class="btn btn-primary" [routerLink]="['/duebills']" routerLinkActive="router-link-active"
+                data-bs-dismiss="modal">Pay Bills Via Wallet</a>
+        </div>
+    </div>
+</div>

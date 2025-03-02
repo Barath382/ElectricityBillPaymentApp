@@ -1,0 +1,91 @@
+<div class="fixed-alert w-25 alert" [ngClass]="{'fade-in': successMessage}">
+    @if (successMessage) {
+    <ngb-alert #selfClosingAlert type={{type}} (closed)="successMessage = ''" class=" m-auto fade mt-4" tabindex="-1">{{
+        successMessage }}</ngb-alert>
+    }
+</div>
+
+<div class="container -flex justify-content-center align-items-cente h-75">
+    <div class="card">
+        <div class="d-flex justify-content-between h-auto">
+            <div class="">
+                <p class="fw-bold m-4"> {{'DUE BILLS'}} </p>
+            </div>
+            <div class="me-5 mt-3">
+                <button class="btn btn-outline-secondary" [routerLink]="['/allbills']"
+                    routerLinkActive="router-link-active">View All</button>
+            </div>
+        </div>
+    </div>
+    <div class="nodata" *ngIf="duebills.length <= 0 && !isloader">
+        <div class="image d-flex justify-content-center">
+            <img src="../../assets/images/nodatafound.jpg" alt="No Data Found" class="" width="500" height="450">
+        </div>
+        <div class="nodue">
+            <p class="text-center display-1 fw-bolder text-body-tertiary">No Bills</p>
+        </div>
+    </div>
+    <div class="row d-flex align-items-cente g-3 mt-2" *ngIf="duebills.length > 0">
+        @for (bills of duebills; track $index) {
+        <div class="col-12 col-md-6 col-lg-4">
+            <form action="" ngForm>
+                <div class="card shadow-md">
+                    <label for="paybill{{ bills.billId }}">
+                        <div class="card-header d-flex justify-content-between bg-primary-subtle">
+                            <p class="pt-2">Bill Id : {{bills.billId}} <span
+                                    class="badge rounded-pill text-bg-warning ms-1"> {{bills.status}} </span></p>
+                            <input type="checkbox" name="paybill" id="paybill{{ bills.billId }}"
+                                class="form-check-input me-3" (change)="handleSelectedBills($event, bills)">
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-4">
+                                    <p class="mb-1 text-body-tertiary">Customer Id</p>
+                                    <p class="mb-1 text-body-tertiary">Units</p>
+                                    <p class="mb-1 text-body-tertiary">Bill Date</p>
+                                    <p class="mb-1 text-body-tertiary">Due Date</p>
+                                    <p class="mb-1 text-body-tertiary">Duration</p>
+                                    <p class="mb-1 text-body-tertiary">Type</p>
+                                </div>
+                                <div class="col-8">
+                                    <p class="mb-1 text-body-secondary"> {{bills.customerId}} </p>
+                                    <p class="mb-1 text-body-secondary"> {{bills.units}} </p>
+                                    <p class="mb-1 text-body-secondary"> {{bills.billDate | date:'mediumDate'}} </p>
+                                    <p class="mb-1 text-body-secondary"> {{bills.dueDate | date:'mediumDate'}} </p>
+                                    <p class="mb-1 text-body-secondary"> {{bills.durationOfBill }} </p>
+                                    <p class="mb-1 text-body-secondary"> {{bills.billType }} </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between bg-body-secondary">
+                            <p class="text-body-tertiary">Total : <span class="text-success fw-medium">{{
+                                    bills.totalAmount | currency: 'INR'}}</span></p>
+                            @if (bills.dueDate < todayDate) { <p class="text-danger">Due Date Ended</p>
+                                } 
+                        </div>
+                    </label>
+                </div>
+            </form>
+        </div>
+        }
+    </div>
+    <div class="card sticky-bottom-card visible" *ngIf="duebills.length > 0">
+        <div class="card-body">
+            <P class="card-title">Total Due Amount : <span class="text-primary"> {{totalAmount | currency: 'INR'}}
+                </span> </P>
+            <P class="card-title">Selected Bill Amount : <span class="text-success fw-medium"> {{payTotalAmount |
+                    currency: 'INR'}} </span> </P>
+            <button class="btn btn-outline-primary" routerLinkActive="router-link-active"
+                (click)="setSelectedBill()">Pay Now</button>
+        </div>
+    </div>
+</div>
+
+<div class="spinner-content" [ngClass]="{'d-none': !isloader}">
+    <div class="text-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>

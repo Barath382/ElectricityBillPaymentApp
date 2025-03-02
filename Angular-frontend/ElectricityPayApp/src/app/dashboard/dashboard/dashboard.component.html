@@ -1,0 +1,154 @@
+<div class="container">
+    <div class="card">
+        <div class="d-flex justify-content-between h-auto">
+            <div class="">
+                <p class="fw-bold m-4"> {{'DASHBOARD'}} </p>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12 col-md-4 col-lg-3 m-auto mt-2">
+            <div class="card shadow">
+                <div class="card-body d-flex justify-content-between pt-2 px-4 mb-0">
+                    <div>
+                        <p class="text-body-secondary">Due </p>
+                        <div *ngIf="!isloader">
+                            <p class="mb-0" *ngIf="dueBillsCount !==0"> {{dueBillsCount}} Bills</p>
+                            <p class="mb-0" *ngIf="dueBillsCount ==0"> No Bills</p>
+                        </div>
+                        <div *ngIf="isloader" class="spinner-grow spinner-grow-sm bg-success" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+
+                    </div>
+                    <p class=" mt-2"><i class="bi bi-receipt fs-4 fw-medium text-success"></i></p>
+                </div>
+                <div class="card-footer">
+                    <a class="icon-link float-end" [routerLink]="['/duebills']">
+                        View
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4 col-lg-3 m-auto mt-2">
+            <div class="card shadow">
+                <div class="card-body d-flex justify-content-between pt-2 px-4 mb-0">
+                    <div>
+                        <p class="text-body-secondary">Transactions</p>
+                        <small class="text-danger-emphasis">For Invoice</small>
+                    </div>
+                    <p><i class="bi bi-list-check text-primary fs-4 fw-bolder"></i></p>
+                </div>
+                <div class="card-footer">
+                    <a class="icon-link float-end" [routerLink]="['/history']">
+                        View
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4 col-lg-3 m-auto mt-2">
+            <div class="card shadow">
+                <div class="card-body d-flex justify-content-between pt-2 px-4 mb-0">
+                    <div>
+                        <p class="text-body-secondary">Wallet</p>
+                        <p *ngIf="!isloader" class="mb-0"> {{customerData.wallet | currency:'INR'}} </p>
+                        <div *ngIf="isloader" class="spinner-grow spinner-grow-sm bg-warning" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <p class=" mt-2"><i class="bi bi-wallet-fill fs-4 fw-medium text-warning"></i></p>
+                </div>
+                <div class="card-footer">
+                    <a class="icon-link float-end" href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        View
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12 col-md-6 m-auto">
+            <div class="card">
+                <div class="card-header bg-success-subtle">
+                    <p class="text-body-emphasis mb-0 p-1"><i class="bi bi-clipboard-data-fill text-danger"></i>
+                        Information</p>
+                </div>
+                <div class="card-body">
+                    <ol class="list-group list-group-numbered">
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Charges</div>
+                                1Kw of energy consumed is Rs. 41.50
+                            </div>
+                            <span class="badge text-bg-primary rounded-pill">₹41.50</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Online Discount</div>
+                                Discount of 5% if the payment is made before the due date
+                            </div>
+                            <span class="badge text-bg-primary rounded-pill">5%</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Online Discount</div>
+                                Discount of 5% if the user make payment via online
+                            </div>
+                            <span class="badge text-bg-primary rounded-pill">5%</span>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 m-auto">
+            <div class="card mt-1">
+                <div class="card-header bg-info-subtle">
+                    <p class="text-body-emphasis mb-0 p-1"><i class="bi bi-person-fill me-2 text-danger-emphasis"></i>
+                        Profile</p>
+                </div>
+                <div class="card-body">
+                    <div class="row" *ngIf="!isloader">
+                        <div class="col-6 col-md-6 text-body-tertiary">Customer Id</div>
+                        <div class="col-6 col-md-6 text-body-secondary"> {{customerData.customerId}} </div>
+                        <div class="col-6 col-md-6 text-body-tertiary">name</div>
+                        <div class="col-6 col-md-6 text-body-secondary"> {{customerData.customerName}} </div>
+                        <div class="col-6 col-md-6 text-body-tertiary">Phone no.</div>
+                        <div class="col-6 col-md-6 text-body-secondary"> {{customerData.phoneNumber}} </div>
+                        <div class="col-6 col-md-6 text-body-tertiary">Email</div>
+                        <div class="col-6 col-md-6 text-body-secondary"> {{customerData.email}} </div>
+                        <div class="col-6 col-md-6 text-body-tertiary">Address</div>
+                        <div class="col-6 col-md-6 text-body-secondary"> {{customerData.address}} </div>
+                    </div>
+                    <div class="row" *ngIf="isloader">
+                        <p class="card-text placeholder-glow">
+                            <span class="placeholder bg-secondary col-6 "></span>
+                            <span class="placeholder bg-secondary col-7 "></span>
+                            <span class="placeholder bg-secondary col-5 "></span>
+                            <span class="placeholder bg-secondary col-8 "></span>
+                            <span class="placeholder bg-secondary col-10 "></span>
+                            <span class="placeholder bg-secondary col-4 "></span>
+                            <span class="placeholder bg-secondary col-8 "></span>
+                            <span class="placeholder bg-secondary col-8 "></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+           <app-wallet-recharge />
+            <div class="modal-footer">
+                <a class="btn text-decoration-none me-2 text-secondary" data-bs-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,130 @@
+<div class="mx-lg-5">
+    <div class="transaction-content mt-3 text-center m-auto">
+        <div class="accordion" id="accordionPanelsStayOpenExample" *ngIf="allTransactionDetails?.length > 0">
+
+            <div class="accordion-item m-0" *ngFor="let allitem of allTransactionDetails; let i = index">
+                <h2 class="accordion-header mb-0 ">
+                    <button class="accordion-button border" [ngClass]="{'collapsed': !allitem.isOpen,'border-success':allitem.transactionStatus=='SUCCESS','border-danger':allitem.transactionStatus=='FAILED'}" type="button"
+                        (click)="toggleItem(i)" [attr.aria-expanded]="allitem.isOpen"
+                        [attr.aria-controls]="'collapse' + i">
+                        <div class="leftcontent d-flex">
+                        <p class="fs-5 text-body-secondary"> {{ allitem.transactionAmount | currency:'INR'}} </p>
+                        <p class="ms-md-4 ms-1 d-flex d-none d-md-block"> <span class=" pe-2">Bill date : </span> {{
+                            allitem.billDate | date:"MMMM d" }} </p>
+                        <p class="ms-md-4 ms-1 d-flex"> <span class="d-none d-md-block pe-2"><span *ngIf="allitem.transactionStatus=='SUCCESS'">Paid :</span> 
+                        <span *ngIf="allitem.transactionStatus=='FAILED'">Failed :</span>  </span> {{
+                            allitem.transactionDateTime | date:"MMMM d" }} </p>
+                        <p class="ms-1"> <i class="bi bi-check-circle-fill text-success" *ngIf="allitem.transactionStatus=='SUCCESS'"></i><i *ngIf="allitem.transactionStatus=='FAILED'" class="bi bi-x-circle-fill text-danger"></i> </p>
+                    </div>
+                    </button>
+
+                </h2>
+                <div [id]="'collapse'+ i" [ngClass]="{'show': allitem.isOpen}" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <div class="company">
+                                    <img src="../../../assets/images/fevicon.png" alt="" class="rounded-circle"
+                                        width="50" height="50">
+                                    <p class="text-body-secondary mt-1">BBC Electricity</p>
+                                </div>
+                                <div class="amount">
+                                    <h5 class="mb-0"> {{allitem.transactionAmount | currency:'INR'}} </h5>
+                                    <small class="text-decoration-line-through"> {{allitem.totalAmount | currency:'INR'}} </small>
+                                    <p *ngIf="allitem.transactionStatus=='FAILED'"><i  class="bi bi-x-circle-fill text-danger"> </i> Failed </p>
+                                    <p *ngIf="allitem.transactionStatus=='SUCCESS'"> <i class="bi bi-check-circle-fill text-success" ></i> Completed</p>
+                                    <div class="border-bottom w-50 m-auto"></div>
+                                    <p class="mt-1"> {{allitem.transactionDateTime | date:"MMMM d, y, 'at' h:mm a"}} </p>
+                                </div>
+                                <div class="card rounded">
+                                    <div class="row mt-2">
+                                        <div class="col-6 ">
+                                            <p class="mb-0">Bill date</p>
+                                            <p class="text-body-secondary mb-0"> {{allitem.billDate | date:'mediumDate'}}
+                                            </p>
+                                        </div>
+                                        <div class="col-6">
+                                            <p class="mb-0">Due date</p>
+                                            <p class="text-body-secondary"> {{allitem.dueDate | date:'mediumDate'}} </p>
+                                        </div>
+                                        <div class="col-6">
+                                            <p class="mb-0">Units</p>
+                                            <p class="text-body-secondary"> {{allitem.units}} </p>
+                                        </div>
+                                        <div class="col-6">
+                                            <p class="mb-0">Bill period</p>
+                                            <p class="text-body-secondary"> {{allitem.durationOfBill}} </p>
+                                        </div>
+                                        <div class="col-6">
+                                            <p class="mb-0"> Customer Id </p>
+                                            <p class="text-body-secondary"> {{customerId}} </p>
+                                        </div>
+                                        <div class="col-6">
+                                            <p class="mb-0">Consumer Type</p>
+                                            <p class="text-body-secondary"> {{allitem.billType}} </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 mt-2">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between">
+                                        <p class="text-warning-emphasis fw-medium"> {{ allitem.transactionAmount | currency:'INR'}} <span
+                                                class="ms-1"> paid </span></p>
+                                        <div class="d-flex">
+                                        <p class="text-success fs-5" *ngIf="allitem.transactionMethod=='CARD'"> <i
+                                                class="bi bi-credit-card-2-front-fill"></i> {{'CARD'}}</p>
+                                        <p class="text-success fs-5" *ngIf="allitem.transactionMethod=='Wallet'"> <i
+                                                class="bi bi-wallet-fill"></i>
+                                            {{'Wallet'}} </p>
+
+                                        <p class="ms-2" placement="start" ngbTooltip="Download Invoice" *ngIf="allitem.transactionStatus=='SUCCESS'" (click)="generateInvoice(allitem.transactionId)"><i class="bi bi-file-earmark-arrow-down-fill fs-4 text-warning-emphasis"></i></p>
+                                    </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="status  w-100">
+                                            <div class="status1 d-flex mb-0 justify-content-center">
+                                                <i class="bi bi-check-circle-fill text-success"></i>
+                                                <div class="status-content ms-2">
+                                                    <p class="mb-0 ms-1">Payment started</p>
+                                                    <p class="text-body-tertiary"> {{allitem.transactionDateTime |
+                                                        date:"MMMM d, y"}} </p>
+                                                </div>
+                                            </div>
+                                            <div class="status2 d-flex justify-content-center">
+                                                <i class="bi bi-check-circle-fill text-success" *ngIf="allitem.transactionStatus=='SUCCESS'"></i>
+                                                <i class="bi bi-dash-circle-fill text-warning" *ngIf="allitem.transactionStatus=='FAILED'"></i>
+                                                <p class="mb-0 ms-2">Payment process</p>
+                                            </div>
+                                            <div class="status3 d-flex mt-2 ms-1 justify-content-center" *ngIf="allitem.transactionStatus=='SUCCESS'">
+                                                <i class="bi bi-check-circle-fill text-success"></i>
+                                                <p class="mb-0 ms-2">Payment success</p>
+                                            </div>
+                                            <div class="status3 d-flex mt-2 justify-content-center" *ngIf="allitem.transactionStatus=='FAILED'">
+                                                <i  class="bi bi-x-circle-fill text-danger"></i>
+                                                <p class="mb-0 ms-2">Payment Failed </p>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-column border-top mt-2 pt-2 ">
+                                            <p class="mb-0">Transaction ID</p>
+                                            <p class="text-body-secondary"> {{allitem.transactionId}} </p>
+                                            <p class="mb-0">Transaction date</p>
+                                            <p class="text-body-secondary"> {{allitem.transactionDateTime | date:"MMMM d, y 'at' hh:mm a"}} </p>
+                                            <div>
+                                            <p class="mb-0" *ngIf="allitem.transactionStatus=='SUCCESS'">Transaction Method</p>
+                                            <p class="text-body-secondary"  *ngIf="allitem.transactionStatus=='SUCCESS'"> {{allitem.transactionMethod}} </p>
+                                            <p class="mb-0" *ngIf="allitem.transactionStatus=='FAILED'">Transaction Problem</p>
+                                            <p class="text-danger"  *ngIf="allitem.transactionStatus=='FAILED'"> {{allitem.transactionMessage}} </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

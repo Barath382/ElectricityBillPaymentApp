@@ -1,0 +1,289 @@
+
+<div class="container-lg">
+    <div class="card shadow-lg m-auto mt-3 main" *ngIf="!ismainpage">
+        <div class="card-header d-flex justify-content-between align-items-center bg-primary-subtle">
+            <p class="text-primary mb-0 fs-5"><i class="btn  bi bi-arrow-left" [routerLink]="['/duebills']" routerLinkActive="router-link-active" 
+                    routerLinkActive="router-link-active"></i> <span class="text-center">BBC UBP</span>
+            </p>
+            <p class="mb-0 me-2"><i class="bi bi-plugin fs-4 text-primary"></i></p>
+
+        </div>
+        <div class="row flex-column-reverse flex-lg-row px-2">
+            <div class="col-12 col-lg-6 p-lg-4 ">
+                <p class="text-body-tertiary p-3 p-lg-0">User Details</p>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4 d-lg-block d-none">
+                                <p class="mb-0 border-end text-body-tertiary fs-6">Name</p>
+                                <p class="mb-0 border-end text-body-tertiary fs-6">Customer Id</p>
+                                <p class="mb-0 border-end text-body-tertiary fs-6">Email</p>
+                            </div>
+                            <div class="col-12 col-lg-8">
+                                <p class="mb-0 text-body-secondary"> {{customerName}} </p>
+                                <p class="mb-0 text-body-secondary"> {{customerId}} </p>
+                                <p class="mb-0 text-body-secondary"> {{email}} </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-body-tertiary my-2 p-3 p-lg-0">Pay with </p>
+                <div class="row mt-2 p-2 m-auto">
+                    <div class="nav nav-underline mb-1" id="pills-tab" role="tablist">
+                        <div class="col-4">
+                            <div class="nav-link card p-1 px-3 active" id="pills-home-tab" data-bs-toggle="pill" style="cursor: pointer;"
+                                data-bs-target="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">
+                                <i class="bi bi-credit-card-fill"></i>
+                                <p class="text-secondary">Card</p>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="nav-link card p-1 px-3" id="pills-profile-tab" data-bs-toggle="pill" style="cursor: pointer;"
+                                data-bs-target="#pills-profile" role="tab" aria-controls="pills-profile"
+                                aria-selected="false">
+                                <i class="bi bi-wallet-fill"></i>
+                                <p class="text-secondary">Wallet</p>
+                            </div>
+
+                        </div>
+                        <div class="col-2">
+                            <div class="card py-1">
+                                <i class="bi bi-three-dots-vertical m-auto my-3"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content m-auto" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
+                        aria-labelledby="pills-home-tab" tabindex="0">
+                        <div class="creditcardform">
+                            <form action="" [formGroup]="paymentCardForm" >
+                                <div class="row m-2">
+                                    <div class="col-12 col-lg-4">
+                                        <div class=" mb-2">
+                                            <label for="cardtype" class="form-label text-body-secondary mb-0">Card</label>
+                                            <select class="form-select" id="cardtype" aria-label="Default select example">
+                                                <option selected disabled>card</option>
+                                                <option value="1">Credit card</option>
+                                                <option value="2">Debit card</option>
+                                              </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-8">
+                                        <div class=" mb-2">
+                                            <label for="cardnumber" class="form-label text-body-secondary mb-0">Card
+                                                number</label>
+                                            <input type="text" class="form-control" id="cardnumber"
+                                                formControlName="cardNumber" placeholder="1234 1234 1234 1234"
+                                                (keypress)="allowOnlyNumbers($event)" minlength="16" maxlength="16">
+                                            <p class="fw-light text-danger ms-3 small"
+                                                *ngIf="paymentCardForm.get('cardNumber')?.invalid && (paymentCardForm.get('cardNumber')?.touched || paymentCardForm.controls['cardNumber'].dirty)">
+                                                <span *ngIf="paymentCardForm.get('cardNumber')?.getError('required')">
+                                                    cardNumber is required
+                                                </span>
+                                                <span
+                                                    *ngIf="paymentCardForm.get('cardNumber')?.errors?.['minlength'] || paymentCardForm.get('cardNumber')?.errors?.['maxlength'] || paymentCardForm.get('cardNumber')?.errors?.['pattern']">
+                                                    Card number must contain only 16 digits
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-8">
+                                        <div class="mb-2">
+                                            <label for="expirationdate"
+                                                class="form-label text-body-secondary mb-0">Expire Date</label>
+                                            <input type="text" class="form-control" id="expirationdate"
+                                                placeholder="MM/YYYY" formControlName="cardExpireDate">
+                                            <p class="fw-light text-danger small"
+                                                *ngIf="paymentCardForm.get('cardExpireDate')?.invalid && (paymentCardForm.get('cardExpireDate')?.touched || paymentCardForm.controls['cardExpireDate'].dirty)">
+                                                <span
+                                                    *ngIf="paymentCardForm.get('cardExpireDate')?.getError('required')">Expire
+                                                    date is required</span>
+                                                <span
+                                                    *ngIf="paymentCardForm.get('cardExpireDate')?.getError('invalidDate')">Invalid
+                                                    expire date (must be in the future)</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class=" mb-1">
+                                            <label for="cardCvv" class="form-label text-body-secondary mb-0">CVV</label>
+                                            <input type="password" class="form-control" placeholder="***" id="cardCvv"  maxlength="3"
+                                            minlength="3"
+                                                formControlName="cardCvv">
+                                            <p class="fw-light text-danger ms-3 small"
+                                                *ngIf="paymentCardForm.get('cardCvv')?.invalid && (paymentCardForm.get('cardCvv')?.touched || paymentCardForm.controls['cardCvv'].dirty)">
+                                                <span *ngIf="paymentCardForm.get('cardCvv')?.getError('required')">
+                                                    CVV is required
+                                                </span>
+                                                <span
+                                                    *ngIf=" paymentCardForm.get('cardCvv')?.getError('pattern') || paymentCardForm.get('cardCvv')?.errors?.['minlength'] || paymentCardForm.get('cardCvv')?.errors?.['maxlength']">
+                                                    CVV must have 3 digit only
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-0">
+                                        <div class="btnsubmit mt-2">
+                                                <button class="btn btn-primary  w-100" (click)="validateCard()"
+                                                [ngClass]="{'d-none': isPaymentValid}"
+                                                [disabled]="paymentCardForm.get('cardCvv')?.invalid || paymentCardForm.get('cardNumber')?.invalid || paymentCardForm.get('cardExpireDate')?.invalid">
+                                                Validate Payment
+                                                  </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <form action="" [formGroup]="otpForm" (ngSubmit)="validateOtp()" [ngClass]="{'d-none': !isPaymentValid}">
+                                <div class="row mx-2">
+                                <div class="col-12 ">
+                                    <div class=" mb-1">
+                                        <label for="cardCvv" class="form-label text-body-secondary mb-0">Otp</label>
+                                        <input type="text" class="form-control" placeholder="######" id="otp"
+                                            formControlName="otp" minlength="6" maxlength="6" pattern="/^\d{6}$/" required>
+                                    </div>
+                                    <p class="fw-light text-danger ms-3 small"
+                                    *ngIf="paymentCardForm.get('otp')?.invalid && (paymentCardForm.get('otp')?.touched || paymentCardForm.controls['otp'].dirty)">
+                                    <span *ngIf="paymentCardForm.get('otp')?.getError('required')">
+                                        OTP is required
+                                    </span>
+                                    <span
+                                        *ngIf="paymentCardForm.get('otp')?.errors?.['minlength'] || paymentCardForm.get('otp')?.errors?.['maxlength'] || paymentCardForm.get('otp')?.errors?.['pattern']">
+                                        OTP must have 6 digits
+                                    </span>
+                                </p>
+                                </div>
+                                <div class="col-12">
+                                    <div class="btnsubmit mt-2">
+                                        <button class="btn btn-primary w-100" [disabled]="paymentCardForm.get('otp')?.invalid">
+                                            Proceed Payment</button>
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
+                        tabindex="0">
+
+                        <div class="waletform p-md-3">
+                            <div class="card p-3 my-2">
+                                <div class="d-flex justify-content-between">
+                                    <i class="bi bi-piggy-bank-fill fs-5"></i>
+                                    <p class="text-success "> {{wallet | currency:'INR'}} </p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p class="text-body-secondary ">Wallet</p>
+                                    <a [routerLink]="['/dashboard']" routerLinkActive="router-link-active"  class="text-info-emphasis text-decoration-none float-end">View wallet</a>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary w-100" (click)="handleWalletPayment()">Confirm
+                                Payment
+                            </button>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab"
+                        tabindex="0">...</div>
+                    <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab"
+                        tabindex="0">...</div>
+                </div>
+
+            </div>
+
+            <div class="col-12 col-lg-6 bg-secondary-subtle p-lg-4 pb-3 px-2 rounded-2">
+                <p class="text-body-tertiary mb-4 p-3 p-lg-0">Amount Details</p>
+                <div class="nav nav-underline mb-3 d-flex justify-content-evenly" id="pills-tab" role="tablist">
+                    <div class="nav-link card px-3 show active" id="pills-amount-tab" data-bs-toggle="pill" style="cursor: pointer;"
+                        data-bs-target="#pills-amount" role="tab" aria-controls="pills-amount" aria-selected="true">
+                        Final
+                        Amount</div>
+                    <div class=" nav-link card px-3" id="pills-bills-tab" data-bs-toggle="pill" style="cursor: pointer;"
+                        data-bs-target="#pills-bills" role="tab" aria-controls="pills-bills" aria-selected="false">
+                        Bills Amount</div>
+                </div>
+                <div class="card px-lg-4 rounded-3">
+                    <div class="card-body">
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-amount" role="tabpanel"
+                                aria-labelledby="pills-amount-tab" tabindex="0">
+                                <p class="text-body-secondary">Final Amount</p>
+                                <div class=" border-bottom">
+                                    <div class="d-flex justify-content-between">
+                                        <h3 class="text-success fw-medium mb-1 mt-1"> {{totalAmountAfterDiscount |
+                                            currency:'INR'}} </h3>
+                                        <p class="mb-1 mt-3 text-body-tertiary fs-6 fw-medium"> {{totalUnits}} units
+                                        </p>
+                                    </div>
+                                    <p class="text-body-tertiary text-decoration-line-through fs-5 mb-0"> {{totalAmount
+                                        | currency:'INR'}} </p>
+                                    <p class="text-body-tertiary">save {{totalAmount-totalAmountAfterDiscount |
+                                        currency:'INR'}} on Bill </p>
+                                </div>
+                                <div class="include mt-1">
+                                    <p class="text-body-secondary">This include:</p>
+
+                                    <ul class="list list-unstyled">
+                                        <li class="text-body-tertiary"> <i
+                                                class="bi bi-check-circle-fill text-info-emphasis me-2"></i>
+                                            {{bills.length}} Bills
+                                            Amount</li>
+                                        <li class="text-body-tertiary"> <i
+                                                class="bi bi-check-circle-fill text-info-emphasis me-2"></i>
+                                            {{beforeDue}} 5%
+                                            off before due date </li>
+                                        <li class="text-body-tertiary"> <i
+                                                class="bi bi-check-circle-fill text-info-emphasis me-2"></i> 5% off for
+                                            online payment</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-bills" role="tabpanel"
+                                aria-labelledby="pills-bills-tab" tabindex="0">
+                                <p class="text-body-secondary">Bill Amount</p>
+                                <ul class="list-group list-group-numbered p-0">
+                                    @for (bill of bills; track $index) {
+                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                        <div class="ms-lg-2 me-auto">
+                                            <div class="fw-medium text-warning-emphasis">Due Date : {{bill.dueDate |
+                                                date:'mediumDate'}} </div>
+                                            <p class="text-body-tertiary">Bill Date: {{bill.billDate |
+                                                date:'mediumDate'}} </p>
+                                        </div>
+                                        <span class="badge bg-warning rounded-pill"> {{bill.totalAmount|
+                                            currency:'INR'}} </span>
+                                    </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer d-flex justify-content-between">
+                        <p>Total Due</p>
+                        <p class="text-success fw-medium">{{ totalAmountAfterDiscount | currency:'INR' }}</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Button trigger modal -->
+<div class="spinner-content" [ngClass]="{'d-none': !isloader}">
+<div class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</div>
+<div class="spinner-content" [ngClass]="{'d-none': !ismainpage}">
+<div class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+
+<nav class="navbar navbar-expand-lg bg-primary sticky-top p-3" data-bs-theme="dark">
+  <div class="container">
+    <a class="navbar-brand" [routerLink]="['/dashboard']">
+      <img src="../../../assets/images/fevicon.png" alt="Bootstrap" width="35" height="35">
+      <span class="ms-2 fw-medium" >BBC UBP</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      </ul>
+      <div class="d-flex flex-column flex-lg-row" role="search">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link " aria-current="page" [routerLink]="['/dashboard']"
+              routerLinkActive="router-link-active">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/duebills']" routerLinkActive="router-link-active">Due Bills</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/history']" routerLinkActive="router-link-active">Transactions</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/allbills']" routerLinkActive="router-link-active">All Bills</a>
+          </li>
+          <li class="nav-item bg-danger rounded ms-lg-5 d-md-none">
+            <a class="nav-link" (click)="logout()" routerLinkActive="router-link-active">Logout</a>
+          </li>
+          <li class="nav-item ms-lg-2 d-none d-md-block">
+            <a class="nav-link" (click)="logout()" routerLinkActive="router-link-active"
+            type="button" placement="bottom" ngbTooltip="Logout"
+            ><img src="../../../assets/images/logout_14442118.png" alt="logout" width="35" height="35"></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

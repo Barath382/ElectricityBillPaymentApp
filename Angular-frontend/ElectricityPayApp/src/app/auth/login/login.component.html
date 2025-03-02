@@ -1,0 +1,83 @@
+<div class="fixed-alert w-25 alert" [ngClass]="{'fade-in': successMessage}">
+  @if (successMessage) {
+  <ngb-alert #selfClosingAlert type={{type}} (closed)="successMessage = ''" class=" m-auto fade mt-4" tabindex="-1">{{
+    successMessage }}</ngb-alert>
+  }
+</div>
+<div class="container-lg d-flex justify-content-center align-items-center vh-100">
+  <div class="card shadow-lg">
+    <div class="card-body">
+      <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-12 col-lg-6 g-3">
+          <div class="image-large d-lg-block d-none mt-2">
+            <div class="text-center me-md-3 me-lg-0 mb-1">
+              <img src="../../../assets/images/bill.png" alt="loginpic" width="400" height="400">
+            </div>
+          </div>
+          <div class="d-lg-none my-1 text-center">
+            <img src="../../../assets/images/avatar.png" alt="loginpic" width="100" height="100">
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="topContent d-flex flex-column g-3 mt-3">
+            <h5 class="text-center text-body-secondary">Welcome To</h5>
+            <p class="text-center text-primary bbc fs-1 fw-bold pt-3">BBC - Utility Bill Pay</p>
+          </div>
+          <form class=" m-auto mt-1 p-lg-5" #loginForm="ngForm" autocomplete="on">
+            <div class="mb-3">
+              <div class="d-flex justify-content-between">
+                <label for="customerid" class="form-label">Customer Id<span class="text-danger">*</span></label>
+                <span><i class="bi bi-info-circle-fill text-secondary" placement="left" tooltipClass="my-custom-class"
+                    ngbTooltip="Id in electricity bill" [openDelay]="300" [closeDelay]="500"></i></span>
+              </div>
+              <input type="text" class="form-control" id="customerid" name="customerId" placeholder="Enter the Customer Id"
+                [(ngModel)]="customer.customerId" #customerId="ngModel" minlength="7" maxlength="7" pattern="^[A-Z0-9]{7}$" required>
+                <small *ngIf="customerId.invalid && (customerId.dirty || customerId.touched)" class="alert text-dander">
+                  <span id="customerid" class="form-text  text-danger"
+                    *ngIf="customerId.hasError('required')">Id required</span>
+                  <span id="customerid" class="form-text  text-danger"
+                    *ngIf="customerId.hasError('minlength') || customerId.hasError('maxlength')">Id must be exactly 7 characters.</span>
+                  <span id="customerid" class="form-text  text-danger"
+                    *ngIf="customerId.hasError('pattern')">Only uppercase alphanumeric characters (A-Z, 0-9) are allowed.</span>
+                </small>
+            </div>
+
+            <button class="btn btn-secondary m-auto w-50 my-5" type="button" (click)="sendOtp()" [disabled]="customerId.invalid"
+              [ngClass]="{'d-none': isShowOtpField, 'd-block': !isShowOtpField}">
+              <!-- <span class="spinner-border spinner-border-sm me-1" aria-hidden="true" *ngIf="isLoading"></span> -->
+              <span role="status" *ngIf="isLoading">Sending...</span> 
+              <span *ngIf="!isLoading">Send OTP</span>
+            </button>
+
+            <div class="mt-3 otp-container otp-field password" *ngIf="isShowOtpField">
+              <div class="mb-3">
+                <label for="customerOtp" class="form-label">OTP<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="customerOtp" name="customerOtp"
+                  [(ngModel)]="customer.customerOtp" required pattern=".{6,6}" minlength="6" maxlength="6"
+                  #customerOtp="ngModel">
+                <span *ngIf="customerOtp.invalid && (customerOtp.dirty && customerOtp.touched)" class="alert">
+                  <span *ngIf="customerOtp.hasError('pattern')" class="form-text  text-danger">
+                    OTP must be exactly 6 number.
+                  </span>
+                </span>
+                <div class="d-flex justify-content-between mt-1">
+                  <p><span class="resend" (click)="resendOtp()" *ngIf="isShowResend">Resend</span><span
+                      class="spinner-border spinner-border-sm ms-1" *ngIf="isLoading"></span></p>
+                  <p *ngIf="!isOtpExpired">Time left: <span class="text-danger-emphasis"> {{minutes}}:{{seconds}}</span>
+                  </p>
+                </div>
+              </div>
+              <div class="text-center my-3">
+                <button type="submit" class="btn btn-primary m-auto w-50" [disabled]="loginForm.invalid"
+                  (click)="validateOtp()">
+                  <span class="spinner-border spinner-border-sm me-1" aria-hidden="true" *ngIf="isLoading"></span>
+                  <span role="status" *ngIf="isLoading">Loading...</span> <span *ngIf="!isLoading">Login</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

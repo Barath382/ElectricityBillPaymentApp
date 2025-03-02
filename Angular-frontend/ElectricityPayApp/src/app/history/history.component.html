@@ -1,0 +1,47 @@
+<div class="container-lg">
+    <div class="card p-2">
+        <div class="d-flex justify-content-between h-auto">
+            <div class="">
+                <p class="fw-bold m-3"> {{'TRANSACTION HISTORY'}} </p>
+            </div>
+            <div class="me-5 mt-lg-1 d-flex">
+                <button class="btn btn-outline-secondary" [routerLink]="['/duebills']"
+                    routerLinkActive="router-link-active">View Dues</button>
+            </div>
+        </div>
+    </div>
+    <div class="nodata" *ngIf="allTransactionDetails?.length <= 0 && !isloading">
+        <div class="image d-flex justify-content-center">
+            <img src="../../assets/images/nodatafound.jpg" alt="No Data Found" class="" width="500" height="450">
+        </div>
+        <div class="nodue">
+            <p class="text-center display-1 fw-bolder text-body-tertiary">No Transactions</p>
+        </div>
+    </div>
+    <div *ngIf="transactionSuccessDetails?.length > 0">
+    <ul class="nav nav-pills mb-3 d-flex justify-content-evenly mt-3" id="pills-tab" role="tablist">
+        <li class="nav-item  w-25" role="presentation">
+          <button type="button" class="nav-link text-center " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Successful Transactions</button>
+        </li>
+        <li class="nav-item w-25" role="presentation">
+          <button type="button" class="nav-link text-center" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">All Transactions</button>
+        </li>
+      </ul>
+      <div class="tab-content text-center" id="pills-tabContent">
+        <div class="tab-pane fade show active px-lg-5" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0" >
+            <app-transactions [transactionSuccessDetails] = "transactionSuccessDetails" (messageEvent)="generateInvoice($event)" ></app-transactions>
+        </div>
+        <div class="tab-pane fade  px-lg-5" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+            <app-alltransactions [allTransactionDetails] ="allTransactionDetails"  (messageEvent)="generateInvoice($event)"/>
+        </div>
+      </div>
+    </div>
+</div>
+
+  <div class="spinner-content" [ngClass]="{'d-none': !isloading}">
+    <div class="text-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
